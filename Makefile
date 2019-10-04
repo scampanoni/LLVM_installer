@@ -1,7 +1,10 @@
-LLVM_VERSION=3.7.1
+LLVM_VERSION=$(notdir $(shell pwd))
 
 all:
 	./scripts/build.sh $(LLVM_VERSION)
+
+print:
+	echo $(LLVM_VERSION)
 
 unpack:
 	./scripts/unpack.sh $(LLVM_VERSION)
