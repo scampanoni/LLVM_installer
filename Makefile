@@ -12,5 +12,10 @@ unpack:
 debug:
 	./scripts/build.sh $(LLVM_VERSION) $@
 
-clean:
-	rm -rf `find ./ -name build` 
+clean_build:
+	rm -rf `find ./ -name build`
+
+clean: clean_build
+	rm -rf src archive
+
+.PHONY: clean clean_build debug unpack print

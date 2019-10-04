@@ -9,6 +9,7 @@ function check_file {
 
 function add_llvm_block {
   pushd . ;
+  mkdir -p "$1" ;
   cd "$1" ;
   check_file ${origDir}/${2}-${LLVM_VER}.src.tar.xz ;
   tar xf ${origDir}/${2}-${LLVM_VER}.src.tar.xz ;
