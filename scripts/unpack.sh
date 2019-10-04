@@ -9,9 +9,12 @@ function check_file {
 
 function add_llvm_block {
   pushd . ;
-  cd $1 ;
+  cd "$1" ;
   check_file ${origDir}/${2}-${LLVM_VER}.src.tar.xz ;
   tar xf ${origDir}/${2}-${LLVM_VER}.src.tar.xz ;
+  if test $# -gt 2 ; then
+    mv ${2}-${LLVM_VER}.src "$3" ;
+  fi
   mv ${origDir}/${2}-${LLVM_VER}.src.tar.xz ${origDir}/archive ;
   popd ;
 }
@@ -35,7 +38,7 @@ mv llvm-${LLVM_VER}.src.tar.xz ${origDir}/archive ;
 cd llvm-${LLVM_VER}.src ;
 
 add_llvm_block tools cfe ;
-add_llvm_block tools clang-tools-extra ;
+add_llvm_block "tools/clang/tools" clang-tools-extra extra ;
 add_llvm_block projects compiler-rt ;
 add_llvm_block projects openmp ;
 add_llvm_block projects test-suite ;
