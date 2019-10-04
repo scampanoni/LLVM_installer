@@ -1,6 +1,5 @@
 Steps:
-
-- Modify Makefile to set the correct version
+- Name the working directory to be the version of LLVM you are installing
 
 - Download the compressed archieved files to ./
 
