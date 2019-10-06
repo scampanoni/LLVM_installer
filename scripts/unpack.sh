@@ -33,11 +33,15 @@ origDir=`pwd` ;
 # Create directories
 mkdir -p archive ;
 
-check_file llvm-${LLVM_VER}.src.tar.xz ; 
-tar xf llvm-${LLVM_VER}.src.tar.xz ;
-mv llvm-${LLVM_VER}.src.tar.xz ${origDir}/archive ;
-cd llvm-${LLVM_VER}.src ;
+# Unpack the LLVM framework
+if ! test -d llvm-${LLVM_VER}.src ; then
+  check_file llvm-${LLVM_VER}.src.tar.xz ; 
+  tar xf llvm-${LLVM_VER}.src.tar.xz ;
+  mv llvm-${LLVM_VER}.src.tar.xz ${origDir}/archive ;
+  cd llvm-${LLVM_VER}.src ;
+fi
 
+# Unpack the other packages
 add_llvm_block tools cfe ;
 add_llvm_block "tools/clang/tools" clang-tools-extra extra ;
 add_llvm_block projects compiler-rt ;
