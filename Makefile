@@ -16,6 +16,9 @@ clean_build:
 	rm -rf `find ./ -name build`
 
 clean: clean_build
-	rm -rf src archive
+	rm -rf src archive llvm-$(LLVM_VERSION).src
 
-.PHONY: clean clean_build debug unpack print
+uninstall:
+	rm -rf release enable
+
+.PHONY: clean clean_build debug unpack print release
