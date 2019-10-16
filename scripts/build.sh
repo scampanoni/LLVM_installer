@@ -10,8 +10,14 @@ function compile_install {
   cd build ;
   eval ${CMAKE} ${CMAKE_OPTIONS} ../
 
-  make -j clang
-  make -j check-clang
+  # Compile
+  make clang ;
+
+  # Install
+  make install ;
+
+  # Check
+  make check-clang ;
 }
 
 if test $# -lt 1 ; then
