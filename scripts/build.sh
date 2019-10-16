@@ -1,6 +1,6 @@
-#!/bin/bash
+#!/bin/bash -e
 
-LLVM_BACKENDS="X86;ARM" ;
+LLVM_BACKENDS="X86;ARM;RISCV" ;
 CMAKE="cmake3"
 
 function compile_install {
@@ -10,9 +10,8 @@ function compile_install {
   cd build ;
   eval ${CMAKE} ${CMAKE_OPTIONS} ../
 
-  ${CMAKE} --build . ;
-
-  ${CMAKE} --build . --target install ;
+  make -j clang
+  make -j check-clang
 }
 
 if test $# -lt 1 ; then
@@ -24,7 +23,7 @@ llvmVersion=$1 ;
 installDir="`pwd`/release" ;
 cmakeOutput="Unix Makefiles" ;
 
-CMAKE_OPTIONS="-G \"${cmakeOutput}\" -DCMAKE_INSTALL_PREFIX=${installDir}"
+CMAKE_OPTIONS="-G \"${cmakeOutput}\" -DCMAKE_INSTALL_PREFIX=${installDir} -DLLVM_ENABLE_ASSERTIONS=On"
 
 # Set the sources
 rm -f src ;
@@ -35,9 +34,9 @@ ln -s llvm-${llvmVersion}.src src
 
 # Decide the type of build
 if test "$2" == "debug" ; then
-  CMAKE_OPTIONS="-DCMAKE_BUILD_TYPE=Debug -DLLVM_ENABLE_ASSERTIONS=On ${CMAKE_OPTIONS} "
+  CMAKE_OPTIONS="-DCMAKE_BUILD_TYPE=Debug ${CMAKE_OPTIONS} "
 else
-  CMAKE_OPTIONS="-DCMAKE_BUILD_TYPE=Release ${CMAKE_OPTIONS}"
+  CMAKE_OPTIONS="-DCMAKE_BUILD_TYPE=RelWithDebInfo ${CMAKE_OPTIONS}"
 fi
 
 # Target to build
