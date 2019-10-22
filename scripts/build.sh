@@ -26,10 +26,23 @@ if test $# -lt 1 ; then
 fi
 llvmVersion=$1 ;
 
-installDir="`pwd`/release" ;
+# Set file names and special options
+if test "$2" == "debug" ; then
+  releaseDir="releaseDebug" ;
+  enableFileName="enableDebug" ;
+  CMAKE_EXTRA_OPTIONS="-DLLVM_ENABLE_ASSERTIONS=On";
+else
+  releaseDir="release" ;
+  enableFileName="enable" ;
+  CMAKE_EXTRA_OPTIONS="";
+fi
+
+# Define the install directory
+installDir="`pwd`/${releaseDir}" ;
 cmakeOutput="Unix Makefiles" ;
 
-CMAKE_OPTIONS="-G \"${cmakeOutput}\" -DCMAKE_INSTALL_PREFIX=${installDir} -DLLVM_ENABLE_ASSERTIONS=On"
+# Set cmake options
+CMAKE_OPTIONS="-G \"${cmakeOutput}\" -DCMAKE_INSTALL_PREFIX=${installDir} ${CMAKE_EXTRA_OPTIONS}"
 
 # Set the sources
 rm -f src ;
@@ -40,9 +53,9 @@ ln -s llvm-${llvmVersion}.src src
 
 # Decide the type of build
 if test "$2" == "debug" ; then
-  CMAKE_OPTIONS="-DCMAKE_BUILD_TYPE=Debug ${CMAKE_OPTIONS} "
+  CMAKE_OPTIONS="-DCMAKE_BUILD_TYPE=RelWithDebInfo ${CMAKE_OPTIONS} "
 else
-  CMAKE_OPTIONS="-DCMAKE_BUILD_TYPE=RelWithDebInfo ${CMAKE_OPTIONS}"
+  CMAKE_OPTIONS="-DCMAKE_BUILD_TYPE=Release ${CMAKE_OPTIONS}"
 fi
 
 # Target to build
@@ -56,8 +69,8 @@ cd src ;
 compile_install ;
 popd ;
 
-echo "#!/bin/bash" > enable ;
-echo " " >> enable ;
-echo "LLVM_HOME=`pwd`/release" >> enable ;
-echo "export PATH=\$LLVM_HOME/bin:\$PATH" >> enable ;
-echo "export LD_LIBRARY_PATH=\$LLVM_HOME/lib:\$LD_LIBRARY_PATH" >> enable ;
+echo "#!/bin/bash" > ${enableFileName} ;
+echo " " >> ${enableFileName} ;
+echo "LLVM_HOME=`pwd`/${releaseDir}" >> ${enableFileName} ;
+echo "export PATH=\$LLVM_HOME/bin:\$PATH" >> ${enableFileName} ;
+echo "export LD_LIBRARY_PATH=\$LLVM_HOME/lib:\$LD_LIBRARY_PATH" >> ${enableFileName} ;

@@ -9,6 +9,7 @@ function check_file {
 
 function add_llvm_block {
   pushd . ;
+  echo "Adding $2" ;
   mkdir -p "$1" ;
   cd "$1" ;
   check_file ${origDir}/${2}-${LLVM_VER}.src.tar.xz ;
@@ -18,6 +19,9 @@ function add_llvm_block {
   fi
   mv ${origDir}/${2}-${LLVM_VER}.src.tar.xz ${origDir}/archive ;
   popd ;
+  echo "" ;
+
+  return ;
 }
 
 # Fetch the inputs
@@ -42,10 +46,10 @@ if ! test -d llvm-${LLVM_VER}.src ; then
 fi
 
 # Unpack the other packages
-add_llvm_block tools cfe ;
+add_llvm_block tools cfe cfe ;
 add_llvm_block tools polly ;
-add_llvm_block tools lldb ;
-add_llvm_block "tools/clang/tools" clang-tools-extra extra ;
+add_llvm_block "tools/cfe/tools" clang-tools-extra extra ;
+#add_llvm_block tools lldb ;
+#add_llvm_block projects test-suite ;
 add_llvm_block projects compiler-rt ;
 add_llvm_block projects openmp ;
-#add_llvm_block projects test-suite ;
