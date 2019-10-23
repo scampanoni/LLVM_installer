@@ -3,7 +3,7 @@ MINIMUM_LLVM_PACKAGES=llvm-$(LLVM_VERSION).src.tar.xz cfe-$(LLVM_VERSION).src.ta
 EXTRA_PACKAGES=polly-$(LLVM_VERSION).src.tar.xz clang-tools-extra-$(LLVM_VERSION).src.tar.xz compiler-rt-$(LLVM_VERSION).src.tar.xz
 PACKAGES=$(MINIMUM_LLVM_PACKAGES) $(EXTRA_PACKAGES)
 
-all: $(PACKAGES)
+all: $(PACKAGES) llvm-$(LLVM_VERSION).src
 	./scripts/build.sh $(LLVM_VERSION)
 
 llvm-$(LLVM_VERSION).src.tar.xz:
@@ -23,6 +23,8 @@ compiler-rt-$(LLVM_VERSION).src.tar.xz:
 
 openmp-$(LLVM_VERSION).src.tar.xz:
 	wget http://releases.llvm.org/$(LLVM_VERSION)/$@
+
+llvm-$(LLVM_VERSION).src: unpack
 
 print:
 	echo $(LLVM_VERSION)
