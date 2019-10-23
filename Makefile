@@ -1,6 +1,9 @@
 LLVM_VERSION=$(notdir $(shell pwd))
+MINIMUM_LLVM_PACKAGES=llvm-$(LLVM_VERSION).src.tar.xz cfe-$(LLVM_VERSION).src.tar.xz openmp-$(LLVM_VERSION).src.tar.xz
+EXTRA_PACKAGES=polly-$(LLVM_VERSION).src.tar.xz clang-tools-extra-$(LLVM_VERSION).src.tar.xz compiler-rt-$(LLVM_VERSION).src.tar.xz
+PACKAGES=$(MINIMUM_LLVM_PACKAGES) $(EXTRA_PACKAGES)
 
-all: llvm-$(LLVM_VERSION).src.tar.xz cfe-$(LLVM_VERSION).src.tar.xz polly-$(LLVM_VERSION).src.tar.xz clang-tools-extra-$(LLVM_VERSION).src.tar.xz compiler-rt-$(LLVM_VERSION).src.tar.xz openmp-$(LLVM_VERSION).src.tar.xz
+all: $(PACKAGES)
 	./scripts/build.sh $(LLVM_VERSION)
 
 llvm-$(LLVM_VERSION).src.tar.xz:
