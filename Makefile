@@ -2,9 +2,10 @@ LLVM_VERSION=$(notdir $(shell pwd))
 MINIMUM_LLVM_PACKAGES=llvm-$(LLVM_VERSION).src.tar.xz cfe-$(LLVM_VERSION).src.tar.xz openmp-$(LLVM_VERSION).src.tar.xz
 EXTRA_PACKAGES=polly-$(LLVM_VERSION).src.tar.xz clang-tools-extra-$(LLVM_VERSION).src.tar.xz compiler-rt-$(LLVM_VERSION).src.tar.xz
 PACKAGES=$(MINIMUM_LLVM_PACKAGES) $(EXTRA_PACKAGES)
+BACKENDS="X86;ARM;RISCV"
 
 all: $(PACKAGES) llvm-$(LLVM_VERSION).src
-	./scripts/build.sh $(LLVM_VERSION)
+	./scripts/build.sh $(LLVM_VERSION) release $(BACKENDS)
 
 llvm-$(LLVM_VERSION).src.tar.xz:
 	wget http://releases.llvm.org/$(LLVM_VERSION)/$@
@@ -33,7 +34,7 @@ unpack:
 	./scripts/unpack.sh $(LLVM_VERSION)
 
 debug:
-	./scripts/build.sh $(LLVM_VERSION) $@
+	./scripts/build.sh $(LLVM_VERSION) $@ $(BACKENDS)
 
 clean_build:
 	rm -rf `find ./ -name build`

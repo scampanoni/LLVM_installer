@@ -1,6 +1,5 @@
 #!/bin/bash -e
 
-LLVM_BACKENDS="X86;ARM;RISCV" ;
 CMAKE="cmake3"
 
 function compile_install {
@@ -18,10 +17,12 @@ function compile_install {
 
   # Check
   make check-clang ;
+
+  return ;
 }
 
-if test $# -lt 1 ; then
-  echo "USAGE: `basename $0` LLVM_VERSION" ;
+if test $# -lt 3 ; then
+  echo "USAGE: `basename $0` LLVM_VERSION [debug|release] BACKENDS" ;
   exit 1;
 fi
 llvmVersion=$1 ;
@@ -30,11 +31,11 @@ llvmVersion=$1 ;
 if test "$2" == "debug" ; then
   releaseDir="releaseDebug" ;
   enableFileName="enableDebug" ;
-  CMAKE_EXTRA_OPTIONS="-DLLVM_ENABLE_ASSERTIONS=On";
+  CMAKE_EXTRA_OPTIONS="-DLLVM_ENABLE_ASSERTIONS=On -DCMAKE_BUILD_TYPE=RelWithDebInfo";
 else
   releaseDir="release" ;
   enableFileName="enable" ;
-  CMAKE_EXTRA_OPTIONS="";
+  CMAKE_EXTRA_OPTIONS="-DCMAKE_BUILD_TYPE=Release";
 fi
 
 # Define the install directory
@@ -51,24 +52,21 @@ if ! test -e llvm-${llvmVersion}.src ; then
 fi
 ln -s llvm-${llvmVersion}.src src 
 
-# Decide the type of build
-if test "$2" == "debug" ; then
-  CMAKE_OPTIONS="-DCMAKE_BUILD_TYPE=RelWithDebInfo ${CMAKE_OPTIONS} "
-else
-  CMAKE_OPTIONS="-DCMAKE_BUILD_TYPE=Release ${CMAKE_OPTIONS}"
-fi
-
 # Target to build
-CMAKE_OPTIONS="-DLLVM_TARGETS_TO_BUILD=\"${LLVM_BACKENDS}\" ${CMAKE_OPTIONS}"
+if test "$3" != "all" ; then
+  CMAKE_OPTIONS="-DLLVM_TARGETS_TO_BUILD=\"${LLVM_BACKENDS}\" ${CMAKE_OPTIONS}" ;
+fi
 
 # Create the directory where we are going to install LLVM
 mkdir -p $installDir ;
 
+# Compile and install
 pushd ./ 
 cd src ;
 compile_install ;
 popd ;
 
+# Dump the enable file
 echo "#!/bin/bash" > ${enableFileName} ;
 echo " " >> ${enableFileName} ;
 echo "LLVM_HOME=`pwd`/${releaseDir}" >> ${enableFileName} ;
