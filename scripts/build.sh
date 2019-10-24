@@ -10,7 +10,7 @@ function compile_install {
   eval ${CMAKE} ${CMAKE_OPTIONS} ../
 
   # Compile
-  make clang ;
+  make -j 4 clang ;
 
   # Install
   make install ;
