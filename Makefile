@@ -4,8 +4,11 @@ EXTRA_PACKAGES=polly-$(LLVM_VERSION).src.tar.xz clang-tools-extra-$(LLVM_VERSION
 PACKAGES=$(MINIMUM_LLVM_PACKAGES) $(EXTRA_PACKAGES)
 BACKENDS="X86;ARM;RISCV"
 
-all: $(PACKAGES) llvm-$(LLVM_VERSION).src
-	./scripts/build.sh $(LLVM_VERSION) release $(BACKENDS)
+all: archive $(PACKAGES) llvm-$(LLVM_VERSION).src
+	./scripts/build.sh $(LLVM_VERSION) release "$(BACKENDS)"
+
+archive:
+	if test -e $@/llvm-$(LLVM_VERSION).src.tar.xz ; then mv archive/* ./ ; fi
 
 llvm-$(LLVM_VERSION).src.tar.xz:
 	wget http://releases.llvm.org/$(LLVM_VERSION)/$@
@@ -45,4 +48,4 @@ clean: clean_build
 uninstall:
 	rm -rf release enable *.xz
 
-.PHONY: clean clean_build debug unpack print release
+.PHONY: archive clean clean_build debug unpack print release
