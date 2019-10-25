@@ -16,16 +16,19 @@ function compile_install {
   make install ;
 
   # Check
-  make check-clang ;
+  if test $1 == "test" ; then
+    make check-clang ;
+  fi
 
   return ;
 }
 
-if test $# -lt 3 ; then
-  echo "USAGE: `basename $0` LLVM_VERSION [debug|release] BACKENDS" ;
+if test $# -lt 4 ; then
+  echo "USAGE: `basename $0` LLVM_VERSION [debug|release] BACKENDS [test|notest]" ;
   exit 1;
 fi
 llvmVersion=$1 ;
+performTests=$4 ;
 
 # Set file names and special options
 if test "$2" == "debug" ; then
@@ -63,7 +66,7 @@ mkdir -p $installDir ;
 # Compile and install
 pushd ./ 
 cd src ;
-compile_install ;
+compile_install $performTests;
 popd ;
 
 # Dump the enable file

@@ -3,6 +3,7 @@ MINIMUM_LLVM_PACKAGES=llvm-$(LLVM_VERSION).src.tar.xz cfe-$(LLVM_VERSION).src.ta
 EXTRA_PACKAGES=polly-$(LLVM_VERSION).src.tar.xz clang-tools-extra-$(LLVM_VERSION).src.tar.xz compiler-rt-$(LLVM_VERSION).src.tar.xz
 PACKAGES=$(MINIMUM_LLVM_PACKAGES) $(EXTRA_PACKAGES)
 BACKENDS="all"  #"X86;ARM;RISCV"
+TESTS="test" #"notest"
 
 all: archive $(PACKAGES) llvm-$(LLVM_VERSION).src
 	./scripts/build.sh $(LLVM_VERSION) release "$(BACKENDS)"
@@ -37,7 +38,7 @@ unpack:
 	./scripts/unpack.sh $(LLVM_VERSION)
 
 debug:
-	./scripts/build.sh $(LLVM_VERSION) $@ $(BACKENDS)
+	./scripts/build.sh $(LLVM_VERSION) $@ $(BACKENDS) $(TESTS)
 
 clean_build:
 	rm -rf `find ./ -name build`
