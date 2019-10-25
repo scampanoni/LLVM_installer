@@ -2,7 +2,7 @@ LLVM_VERSION=$(notdir $(shell pwd))
 MINIMUM_LLVM_PACKAGES=llvm-$(LLVM_VERSION).src.tar.xz cfe-$(LLVM_VERSION).src.tar.xz openmp-$(LLVM_VERSION).src.tar.xz
 EXTRA_PACKAGES=polly-$(LLVM_VERSION).src.tar.xz clang-tools-extra-$(LLVM_VERSION).src.tar.xz compiler-rt-$(LLVM_VERSION).src.tar.xz
 PACKAGES=$(MINIMUM_LLVM_PACKAGES) $(EXTRA_PACKAGES)
-BACKENDS="X86;ARM;RISCV"
+BACKENDS="all"  #"X86;ARM;RISCV"
 
 all: archive $(PACKAGES) llvm-$(LLVM_VERSION).src
 	./scripts/build.sh $(LLVM_VERSION) release "$(BACKENDS)"
