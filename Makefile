@@ -6,7 +6,7 @@ BACKENDS="all"  #"X86;ARM;RISCV"
 TESTS="test" #"notest"
 EXTRAS="extra" #"noextra"
 
-all: archive $(PACKAGES) llvm-$(LLVM_VERSION).src
+all: archive src
 	./scripts/build.sh $(LLVM_VERSION) release "$(BACKENDS)" $(TESTS)
 
 archive:
@@ -30,12 +30,13 @@ compiler-rt-$(LLVM_VERSION).src.tar.xz:
 openmp-$(LLVM_VERSION).src.tar.xz:
 	wget http://releases.llvm.org/$(LLVM_VERSION)/$@
 
-llvm-$(LLVM_VERSION).src: unpack
+src: unpack
+	ln -s llvm-$(LLVM_VERSION).src $@
 
 print:
 	echo $(LLVM_VERSION)
 
-unpack:
+unpack: $(PACKAGES)
 	./scripts/unpack.sh $(LLVM_VERSION) $(EXTRAS)
 
 debug:

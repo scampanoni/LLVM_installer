@@ -48,13 +48,6 @@ cmakeOutput="Unix Makefiles" ;
 # Set cmake options
 CMAKE_OPTIONS="-G \"${cmakeOutput}\" -DCMAKE_INSTALL_PREFIX=${installDir} ${CMAKE_EXTRA_OPTIONS}"
 
-# Set the sources
-rm -f src ;
-if ! test -e llvm-${llvmVersion}.src ; then
-  tar xf llvm-${llvmVersion}.src.tar.xz ;
-fi
-ln -s llvm-${llvmVersion}.src src 
-
 # Target to build
 if test "$3" != "all" ; then
   CMAKE_OPTIONS="-DLLVM_TARGETS_TO_BUILD=\"${LLVM_BACKENDS}\" ${CMAKE_OPTIONS}" ;
