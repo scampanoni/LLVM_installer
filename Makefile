@@ -4,6 +4,7 @@ EXTRA_PACKAGES=polly-$(LLVM_VERSION).src.tar.xz clang-tools-extra-$(LLVM_VERSION
 PACKAGES=$(MINIMUM_LLVM_PACKAGES) $(EXTRA_PACKAGES)
 BACKENDS="all"  #"X86;ARM;RISCV"
 TESTS="test" #"notest"
+EXTRAS="extra" #"noextra"
 
 all: archive $(PACKAGES) llvm-$(LLVM_VERSION).src
 	./scripts/build.sh $(LLVM_VERSION) release "$(BACKENDS)"
@@ -35,7 +36,7 @@ print:
 	echo $(LLVM_VERSION)
 
 unpack:
-	./scripts/unpack.sh $(LLVM_VERSION)
+	./scripts/unpack.sh $(LLVM_VERSION) $(EXTRAS)
 
 debug:
 	./scripts/build.sh $(LLVM_VERSION) $@ $(BACKENDS) $(TESTS)

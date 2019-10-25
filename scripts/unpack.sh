@@ -25,11 +25,12 @@ function add_llvm_block {
 }
 
 # Fetch the inputs
-if test $# -lt 1 ; then
-  echo "USAGE: `basename $0` LLVM_VERSION" ;
+if test $# -lt 2 ; then
+  echo "USAGE: `basename $0` LLVM_VERSION [extra|noextra]" ;
   exit 1;
 fi
 LLVM_VER=$1 ;
+extras=$2 ;
 
 # Set variables
 origDir=`pwd` ;
@@ -47,9 +48,11 @@ fi
 
 # Unpack the other packages
 add_llvm_block tools cfe cfe ;
-add_llvm_block tools polly ;
-add_llvm_block "tools/cfe/tools" clang-tools-extra extra ;
-#add_llvm_block tools lldb ;
-#add_llvm_block projects test-suite ;
-add_llvm_block projects compiler-rt ;
-add_llvm_block projects openmp ;
+if test $extras == "extra" ; then
+  #add_llvm_block tools lldb ;
+  add_llvm_block tools polly ;
+  add_llvm_block "tools/cfe/tools" clang-tools-extra extra ;
+  add_llvm_block projects compiler-rt ;
+  add_llvm_block projects openmp ;
+  #add_llvm_block projects test-suite ;
+fi
