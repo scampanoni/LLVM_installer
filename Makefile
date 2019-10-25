@@ -7,7 +7,7 @@ TESTS="test" #"notest"
 EXTRAS="extra" #"noextra"
 
 all: archive $(PACKAGES) llvm-$(LLVM_VERSION).src
-	./scripts/build.sh $(LLVM_VERSION) release "$(BACKENDS)"
+	./scripts/build.sh $(LLVM_VERSION) release "$(BACKENDS)" $(TESTS)
 
 archive:
 	if test -e $@/llvm-$(LLVM_VERSION).src.tar.xz ; then mv archive/* ./ ; fi
@@ -39,7 +39,7 @@ unpack:
 	./scripts/unpack.sh $(LLVM_VERSION) $(EXTRAS)
 
 debug:
-	./scripts/build.sh $(LLVM_VERSION) $@ $(BACKENDS) $(TESTS)
+	./scripts/build.sh $(LLVM_VERSION) $@ "$(BACKENDS)" $(TESTS)
 
 clean_build:
 	rm -rf `find ./ -name build`
