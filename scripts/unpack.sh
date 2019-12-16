@@ -47,11 +47,11 @@ if ! test -d llvm-${LLVM_VER}.src ; then
 fi
 
 # Unpack the other packages
-add_llvm_block tools cfe cfe ;
+add_llvm_block tools cfe clang ;
 if test $extras == "extra" ; then
   #add_llvm_block tools lldb ;
   add_llvm_block tools polly ;
-  add_llvm_block "tools/cfe/tools" clang-tools-extra extra ;
+  add_llvm_block "tools/clang/tools" clang-tools-extra extra ;
   add_llvm_block projects compiler-rt ;
   add_llvm_block projects openmp ;
   #add_llvm_block projects test-suite ;
