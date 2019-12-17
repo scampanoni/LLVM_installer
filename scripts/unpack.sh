@@ -9,13 +9,28 @@ function check_file {
 
 function add_llvm_block {
   pushd . ;
-  echo "Adding $2" ;
+
+  # Create the destination directory
   mkdir -p "$1" ;
   cd "$1" ;
   check_file ${origDir}/${2}-${LLVM_VER}.src.tar.xz ;
-  tar xf ${origDir}/${2}-${LLVM_VER}.src.tar.xz ;
-  if test $# -gt 2 ; then
-    mv ${2}-${LLVM_VER}.src "$3" ;
+
+  # Check if we have already added the current LLVM piece
+  needToAdd="1";
+  if test -e ${2}-${LLVM_VER}.src ; then
+    needToAdd="0";
+  fi
+  if test $# -gt 2; then
+    if test -e $3 ; then
+      needToAdd="0";
+    fi
+  fi
+  if test $needToAdd == "1" ; then
+    echo "Adding $2" ;
+    tar xf ${origDir}/${2}-${LLVM_VER}.src.tar.xz ;
+    if test $# -gt 2 ; then
+      mv ${2}-${LLVM_VER}.src "$3" ;
+    fi
   fi
   mv ${origDir}/${2}-${LLVM_VER}.src.tar.xz ${origDir}/archive ;
   popd ;
