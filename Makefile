@@ -5,9 +5,10 @@ PACKAGES=$(MINIMUM_LLVM_PACKAGES) $(EXTRA_PACKAGES)
 BACKENDS="all"  #"X86;ARM;RISCV"
 TESTS="test" #"notest"
 EXTRAS="extra" #"noextra"
+EXTRA_CMAKE_OPTIONS="" 
 
 all: archive src
-	./scripts/build.sh $(LLVM_VERSION) release "$(BACKENDS)" $(TESTS)
+	./scripts/build.sh $(LLVM_VERSION) release "$(BACKENDS)" $(TESTS) "$(EXTRA_CMAKE_OPTIONS)"
 
 archive:
 	if test -e $@/llvm-$(LLVM_VERSION).src.tar.xz ; then mv archive/* ./ ; fi
@@ -40,7 +41,7 @@ unpack: $(PACKAGES)
 	./scripts/unpack.sh $(LLVM_VERSION) $(EXTRAS)
 
 debug:
-	./scripts/build.sh $(LLVM_VERSION) $@ "$(BACKENDS)" $(TESTS)
+	./scripts/build.sh $(LLVM_VERSION) $@ "$(BACKENDS)" $(TESTS) "$(EXTRA_CMAKE_OPTIONS)"
 
 clean_build:
 	rm -rf `find ./ -name build`

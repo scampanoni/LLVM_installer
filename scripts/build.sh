@@ -29,6 +29,10 @@ if test $# -lt 4 ; then
 fi
 llvmVersion=$1 ;
 performTests=$4 ;
+extraCmakeOptions="" ;
+if test $# -ge 5 ; then
+  extraCmakeOptions="$5" ;
+fi
 
 # Set file names and special options
 if test "$2" == "debug" ; then
@@ -40,6 +44,7 @@ else
   enableFileName="enable" ;
   CMAKE_EXTRA_OPTIONS="-DCMAKE_BUILD_TYPE=Release";
 fi
+CMAKE_EXTRA_OPTIONS="$extraCmakeOptions $CMAKE_EXTRA_OPTIONS" ;
 
 # Define the install directory
 installDir="`pwd`/${releaseDir}" ;
