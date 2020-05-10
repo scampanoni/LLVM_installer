@@ -3,6 +3,7 @@
 CMAKE="cmake3"
 
 function compile_install {
+  echo "LLVM_Installer:   Compiling LLVM" ;
   rm -rf build ;
   mkdir build ;
 
@@ -10,13 +11,17 @@ function compile_install {
   eval ${CMAKE} ${CMAKE_OPTIONS} ../
 
   # Compile
-  make -j 4 clang ;
+  make -j 24 clang ;
+  echo "" ;
 
   # Install
+  echo "LLVM_Installer:   Installing LLVM" ;
   make install ;
+  echo "" ;
 
   # Check
   if test $1 == "test" ; then
+    echo "LLVM_Installer:   Testing LLVM" ;
     make check-clang ;
   fi
 
@@ -34,14 +39,17 @@ if test $# -ge 5 ; then
   extraCmakeOptions="$5" ;
 fi
 
+# Set variables
+origDir="`pwd`" ;
+
 # Set file names and special options
 if test "$2" == "debug" ; then
   releaseDir="releaseDebug" ;
-  enableFileName="enableDebug" ;
+  enableFileName="${origDir}/enableDebug" ;
   CMAKE_EXTRA_OPTIONS="-DLLVM_ENABLE_ASSERTIONS=On -DCMAKE_BUILD_TYPE=RelWithDebInfo";
 else
   releaseDir="release" ;
-  enableFileName="enable" ;
+  enableFileName="${origDir}/enable" ;
   CMAKE_EXTRA_OPTIONS="-DCMAKE_BUILD_TYPE=Release";
 fi
 CMAKE_EXTRA_OPTIONS="$extraCmakeOptions $CMAKE_EXTRA_OPTIONS" ;
@@ -58,11 +66,25 @@ if test "$3" != "all" ; then
   CMAKE_OPTIONS="-DLLVM_TARGETS_TO_BUILD=\"$3\" ${CMAKE_OPTIONS}" ;
 fi
 
+# Set the sources
+rm -f src ;
+if ! test -e llvm-${llvmVersion}.src ; then
+  tar xf llvm-${llvmVersion}.src.tar.xz ;
+fi
+ln -s llvm-${llvmVersion}.src src 
+
+# Decide the type of build
+if test "$2" == "debug" ; then
+  CMAKE_OPTIONS="-DCMAKE_BUILD_TYPE=RelWithDebInfo ${CMAKE_OPTIONS} "
+else
+  CMAKE_OPTIONS="-DCMAKE_BUILD_TYPE=Release ${CMAKE_OPTIONS}"
+fi
+
 # Create the directory where we are going to install LLVM
 mkdir -p $installDir ;
 
-# Compile and install
-pushd ./ 
+# Compile, install, and test LLVM
+pushd ./ ;
 cd src ;
 compile_install $performTests;
 popd ;
