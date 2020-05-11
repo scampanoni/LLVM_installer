@@ -19,6 +19,13 @@ function compile_install {
   make install ;
   echo "" ;
 
+  # Dump the enable file
+  echo "#!/bin/bash" > ${enableFileName} ;
+  echo " " >> ${enableFileName} ;
+  echo "LLVM_HOME=`pwd`/${releaseDir}" >> ${enableFileName} ;
+  echo "export PATH=\$LLVM_HOME/bin:\$PATH" >> ${enableFileName} ;
+  echo "export LD_LIBRARY_PATH=\$LLVM_HOME/lib:\$LD_LIBRARY_PATH" >> ${enableFileName} ;
+
   # Check
   if test $1 == "test" ; then
     echo "LLVM_Installer:   Testing LLVM" ;
@@ -88,10 +95,3 @@ pushd ./ ;
 cd src ;
 compile_install $performTests;
 popd ;
-
-# Dump the enable file
-echo "#!/bin/bash" > ${enableFileName} ;
-echo " " >> ${enableFileName} ;
-echo "LLVM_HOME=`pwd`/${releaseDir}" >> ${enableFileName} ;
-echo "export PATH=\$LLVM_HOME/bin:\$PATH" >> ${enableFileName} ;
-echo "export LD_LIBRARY_PATH=\$LLVM_HOME/lib:\$LD_LIBRARY_PATH" >> ${enableFileName} ;
