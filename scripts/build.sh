@@ -22,7 +22,7 @@ function compile_install {
   # Dump the enable file
   echo "#!/bin/bash" > ${enableFileName} ;
   echo " " >> ${enableFileName} ;
-  echo "LLVM_HOME=`pwd`/${releaseDir}" >> ${enableFileName} ;
+  echo "LLVM_HOME=${origDir}/${releaseDir}" >> ${enableFileName} ;
   echo "export PATH=\$LLVM_HOME/bin:\$PATH" >> ${enableFileName} ;
   echo "export LD_LIBRARY_PATH=\$LLVM_HOME/lib:\$LD_LIBRARY_PATH" >> ${enableFileName} ;
 
