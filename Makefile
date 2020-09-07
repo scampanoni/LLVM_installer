@@ -1,17 +1,10 @@
 LLVM_VERSION=$(notdir $(shell pwd))
-
 MINIMUM_LLVM_PACKAGES=llvm-$(LLVM_VERSION).src.tar.xz clang-$(LLVM_VERSION).src.tar.xz openmp-$(LLVM_VERSION).src.tar.xz
-
 EXTRA_PACKAGES=polly-$(LLVM_VERSION).src.tar.xz clang-tools-extra-$(LLVM_VERSION).src.tar.xz compiler-rt-$(LLVM_VERSION).src.tar.xz
-
 PACKAGES=$(MINIMUM_LLVM_PACKAGES) $(EXTRA_PACKAGES)
-
 BACKENDS="all"  #"X86;ARM;RISCV"
-
 TESTS="test" #"notest"
-
 EXTRAS="extra" #"noextra"
-
 EXTRA_CMAKE_OPTIONS="" 
 
 all: archive src
@@ -60,3 +53,4 @@ uninstall:
 	rm -rf release enable *.xz
 
 .PHONY: archive clean clean_build debug unpack print release
+
