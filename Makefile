@@ -6,6 +6,11 @@ BACKENDS="all"  #"X86;ARM;RISCV"
 TESTS="test" #"notest"
 EXTRAS="extra" #"noextra"
 EXTRA_CMAKE_OPTIONS="" 
+ifeq ($(LLVM_VERSION), 10.0.0)
+LLVM_URL=https://github.com/llvm/llvm-project/releases/download/llvmorg-
+else
+LLVM_URL=http://releases.llvm.org/
+endif
 
 all: archive src
 	./scripts/build.sh $(LLVM_VERSION) release "$(BACKENDS)" $(TESTS) "$(EXTRA_CMAKE_OPTIONS)"
@@ -14,22 +19,22 @@ archive:
 	if test -e $@/llvm-$(LLVM_VERSION).src.tar.xz ; then mv archive/* ./ ; fi
 
 llvm-$(LLVM_VERSION).src.tar.xz:
-	wget https://github.com/llvm/llvm-project/releases/download/llvmorg-$(LLVM_VERSION)/$@
+	wget $(LLVM_URL)$(LLVM_VERSION)/$@
 
 clang-$(LLVM_VERSION).src.tar.xz:
-	wget https://github.com/llvm/llvm-project/releases/download/llvmorg-$(LLVM_VERSION)/$@
+	wget $(LLVM_URL)$(LLVM_VERSION)/$@
 
 polly-$(LLVM_VERSION).src.tar.xz:
-	wget https://github.com/llvm/llvm-project/releases/download/llvmorg-$(LLVM_VERSION)/$@
+	wget $(LLVM_URL)$(LLVM_VERSION)/$@
 
 clang-tools-extra-$(LLVM_VERSION).src.tar.xz:
-	wget https://github.com/llvm/llvm-project/releases/download/llvmorg-$(LLVM_VERSION)/$@
+	wget $(LLVM_URL)$(LLVM_VERSION)/$@
 
 compiler-rt-$(LLVM_VERSION).src.tar.xz:
-	wget https://github.com/llvm/llvm-project/releases/download/llvmorg-$(LLVM_VERSION)/$@
+	wget $(LLVM_URL)$(LLVM_VERSION)/$@
 
 openmp-$(LLVM_VERSION).src.tar.xz:
-	wget https://github.com/llvm/llvm-project/releases/download/llvmorg-$(LLVM_VERSION)/$@
+	wget $(LLVM_URL)$(LLVM_VERSION)/$@
 
 src: unpack
 	ln -s llvm-$(LLVM_VERSION).src $@
