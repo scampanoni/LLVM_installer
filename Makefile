@@ -6,16 +6,8 @@ BACKENDS="all"  #"X86;ARM;RISCV"
 TESTS="test" #"notest"
 EXTRAS="extra" #"noextra"
 EXTRA_CMAKE_OPTIONS="" 
-ifeq ($(LLVM_VERSION), 10.0.0)
 LLVM_URL=https://github.com/llvm/llvm-project/releases/download/llvmorg-
-else
-LLVM_URL=https://releases.llvm.org/
-endif
-ifeq ($(LLVM_VERSION), 10.0.0)
 CLANG_ADDR=clang-$(LLVM_VERSION).src.tar.xz
-else
-CLANG_ADDR=cfe-$(LLVM_VERSION).src.tar.xz
-endif
 
 
 all: archive src
