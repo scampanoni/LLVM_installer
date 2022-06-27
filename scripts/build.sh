@@ -3,15 +3,15 @@
 CMAKE="cmake"
 
 function compile_install {
-  echo "LLVM_Installer:   Compiling LLVM" ;
+  echo "LLVM_Installer:   Compiling LLVM with the following options: ${CMAKE_OPTIONS}" ;
   rm -rf build ;
   mkdir build ;
 
   cd build ;
-  eval ${CMAKE} ${CMAKE_OPTIONS} ../
+  eval ${CMAKE} ${CMAKE_OPTIONS} ../llvm 
 
   # Compile
-  make -j 28 clang ;
+  make -j 28 ;
   echo "" ;
 
   # Install
@@ -66,19 +66,12 @@ installDir="`pwd`/${releaseDir}" ;
 cmakeOutput="Unix Makefiles" ;
 
 # Set cmake options
-CMAKE_OPTIONS="-G \"${cmakeOutput}\" -DCMAKE_INSTALL_PREFIX=${installDir} ${CMAKE_EXTRA_OPTIONS}"
+CMAKE_OPTIONS="-G \"${cmakeOutput}\" -DCMAKE_INSTALL_PREFIX=${installDir} ${CMAKE_EXTRA_OPTIONS} -DLLVM_ENABLE_PROJECTS=\"clang;clang-tools-extra;openmp;polly;mlir;flang\""
 
 # Target to build
 if test "$3" != "all" ; then
   CMAKE_OPTIONS="-DLLVM_TARGETS_TO_BUILD=\"$3\" ${CMAKE_OPTIONS}" ;
 fi
-
-# Set the sources
-rm -f src ;
-if ! test -e llvm-${llvmVersion}.src ; then
-  tar xf llvm-${llvmVersion}.src.tar.xz ;
-fi
-ln -s llvm-${llvmVersion}.src src 
 
 # Create the directory where we are going to install LLVM
 mkdir -p $installDir ;

@@ -49,25 +49,26 @@ extras=$2 ;
 
 # Set variables
 origDir=`pwd` ;
+srcFileName="llvmorg-${LLVM_VER}";
+
+# Check if we need to do anything
+if test -d llvm-project-llvmorg-${LLVM_VER} ; then
+  exit 0;
+fi
+echo "LLVM_INSTALLER: Installing $LLVM_VER with $extras" ;
 
 # Create directories
 mkdir -p archive ;
 
 # Unpack the LLVM framework
-if ! test -d llvm-${LLVM_VER}.src ; then
-  check_file llvm-${LLVM_VER}.src.tar.xz ; 
-  tar xf llvm-${LLVM_VER}.src.tar.xz ;
-  mv llvm-${LLVM_VER}.src.tar.xz ${origDir}/archive ;
-  cd llvm-${LLVM_VER}.src ;
+if ! test -d ${srcFileName} ; then
+  check_file ${srcFileName}.tar.gz ; 
+  tar xf ${srcFileName}.tar.gz ;
+  if ! test -e ${origDir}/archive/${srcFileName}.tar.gz ; then
+    mv ${srcFileName}.tar.gz ${origDir}/archive ;
+  else
+    rm ${srcFileName}.tar.gz ;
+  fi
 fi
 
-# Unpack the other packages
-add_llvm_block tools clang ;
-if test $extras == "extra" ; then
-  #add_llvm_block tools lldb ;
-  add_llvm_block tools polly ;
-  add_llvm_block "tools/clang/tools" clang-tools-extra extra ;
-  add_llvm_block projects compiler-rt ;
-  add_llvm_block projects openmp ;
-  #add_llvm_block projects test-suite ;
-fi
+cd llvm-project-llvmorg-${LLVM_VER} ;
