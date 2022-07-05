@@ -66,7 +66,7 @@ installDir="`pwd`/${releaseDir}" ;
 cmakeOutput="Unix Makefiles" ;
 
 # Set cmake options
-CMAKE_OPTIONS="-G \"${cmakeOutput}\" -DCMAKE_INSTALL_PREFIX=${installDir} ${CMAKE_EXTRA_OPTIONS} -DLLVM_ENABLE_PROJECTS=\"clang;clang-tools-extra;openmp;polly;mlir;flang\""
+CMAKE_OPTIONS="-G \"${cmakeOutput}\" -DCMAKE_INSTALL_PREFIX=${installDir} ${CMAKE_EXTRA_OPTIONS} -DLLVM_ENABLE_PROJECTS=\"clang;clang-tools-extra;openmp;polly;mlir;flang;compiler-rt\""
 
 # Target to build
 if test "$3" != "all" ; then
