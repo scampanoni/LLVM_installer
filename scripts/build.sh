@@ -51,9 +51,9 @@ origDir="`pwd`" ;
 
 # Set file names and special options
 if test "$2" == "debug" ; then
-  releaseDir="releaseDebug" ;
+  releaseDir="Debug" ;
   enableFileName="${origDir}/enableDebug" ;
-  CMAKE_EXTRA_OPTIONS="-DLLVM_ENABLE_ASSERTIONS=On -DCMAKE_BUILD_TYPE=RelWithDebInfo";
+  CMAKE_EXTRA_OPTIONS="-DLLVM_ENABLE_ASSERTIONS=On -DCMAKE_BUILD_TYPE=$releaseDir";
 else
   releaseDir="release" ;
   enableFileName="${origDir}/enable" ;
